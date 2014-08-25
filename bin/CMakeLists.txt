@@ -7,6 +7,9 @@ target_link_libraries(sample hbio)
 add_executable(hbrhs2mtx hbrhs2mtx.c)
 target_link_libraries(hbrhs2mtx hbio)
 
+add_executable(hbmat2hb hbmat2hb.c)
+target_link_libraries(hbmat2hb hbio)
+
 add_executable(hbmat2mtx hbmat2mtx.c)
 target_link_libraries(hbmat2mtx hbio)
 
