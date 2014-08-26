@@ -38,11 +38,12 @@ Fri Aug 15 16:29:47 EDT 1997
 #include<string.h>
 #include "iohb.h"
 #include "mmio.h"
+
 char* substr(const char* S, int pos, int len);
 FILE * readHB_newind(const char*, int*, int*, int*, int**, int**);
 FILE * readHB_ind(const char*, int[], int[]);
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   FILE *in_file;
   char Title[73], Key[9], Rhstype[4];
@@ -176,7 +177,7 @@ void main(int argc, char *argv[])
       col += Valwidth;
     }
   }
-
+  return 0;
 }
 
 FILE * readHB_ind(const char* filename, int colptr[], int rowind[])
