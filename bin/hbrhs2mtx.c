@@ -35,7 +35,7 @@ Fri Aug 15 16:29:47 EDT 1997
 char* substr(const char* S, const int pos, const int len);
 char* Makename(const char* Basename, const char* Vectype, const int Nrhs);
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   FILE *in_file;
   FILE *out_file;
@@ -184,6 +184,7 @@ void main(int argc, char *argv[])
       }
     }
   }
+  return 0;
 }
 
 char * Makename(const char *Basename, const char* Vectype, const int Nrhs) {

@@ -26,7 +26,7 @@ Fri Aug 15 16:29:47 EDT 1997
 #include<stdio.h>
 #include "iohb.h"
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   int M, N, nonzeros, Nrhs;
   int *colptr, *rowind;
@@ -84,4 +84,5 @@ void main(int argc, char *argv[])
 
   fprintf(stderr,"**** Successful completion of %s. Generated %s. ****\n",argv[0],argv[2]);
 
+  return 0;
 }

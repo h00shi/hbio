@@ -34,7 +34,7 @@ Fri Aug 15 16:29:47 EDT 1997
 
 char* substr(const char* S, int pos, int len);
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   FILE *in_file;
   char Title[73], Key[9], Rhstype[4];
@@ -148,4 +148,5 @@ void main(int argc, char *argv[])
         fprintf(stdout,format,rowp1,colp1);
       }
   }
+  return 0;
 }
