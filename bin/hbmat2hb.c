@@ -35,38 +35,23 @@ Fri Aug 15 16:29:47 EDT 1997
 char* substr(const char* S, const int pos, const int len);
 char* Makename(const char* Basename, const char* Vectype, const int Nrhs);
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   FILE *in_file;
-  FILE *out_file;
   char Title[73], Key[9], Rhstype[4];
   char Type[4];
   char Ptrfmt[17], Indfmt[17], Valfmt[21], Rhsfmt[21];
   int Ptrcrd, Indcrd, Valcrd, Rhscrd;
-  int Ptrperline, Ptrwidth, Indperline, Indwidth;
-  int Rhsperline, Rhswidth;
-  int Rhsflag;           /* Indicates 'E','D', or 'F' float format */
   int nvecs;
   int Nrow, Ncol, Nnzero;
   int Nrhs;
   char *valc;
-  char *tmp1;
-  char *tmp2;
   char *Rhsc;
   char *Estc;
   char *Slnc;
-  char *Rhsi;
   char *Valfmtc;
   char *Rhsfmtc;
-  char format[30];
-  char rformat[30];
-  char cformat[30];
-  char *RhsFilename;
-  char *SlnFilename;
-  char *EstFilename;
   int *colptr, *rowind;
-  int i, vectorp, j, indxval, rowp1, colp1;
-  MM_typecode matcode;
 
   if (argc != 3) {
     printf("Usage: %s HBfile_in HBfile_out\n", argv[0]);
@@ -117,10 +102,15 @@ void main(int argc, char *argv[])
   writeHB_mat_char(argv[2], Nrow, Ncol, Nnzero, colptr, rowind, valc,
       Nrhs, Rhsc, Estc, Slnc, "Test Title", "Test Key", Type,
       Ptrfmt, Indfmt, Valfmtc, Rhsfmtc, "FGX");
-
+  return 0;
 }
 
-char * Makename(const char *Basename, const char* Vectype, const int Nrhs) {
+char * Makename(
+    const char *Basename,
+    const char* Vectype,
+    const int Nrhs
+    )
+{
   char *tmp;
   char *Filename;
   tmp = strchr(Basename,'.');
@@ -131,6 +121,11 @@ char * Makename(const char *Basename, const char* Vectype, const int Nrhs) {
   tmp = substr(Basename,0,tmp-Basename);
   Filename = (char *) malloc((strlen(tmp)+10));
   strcpy(Filename,tmp);
-  sprintf(&Filename[strlen(tmp)],"_%3s%d.mtx\0",Vectype,Nrhs);
+  sprintf(
+      &Filename[strlen(tmp)],
+      "_%3s%d.mtx\0",
+      Vectype,
+      Nrhs
+      );
   return Filename;
 }
