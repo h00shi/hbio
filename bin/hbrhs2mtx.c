@@ -195,21 +195,12 @@ char * Makename(const char *Basename, const char* Vectype, const int Nrhs) {
   tail = strrchr(Basename,'/')+1;
   tmp = strchr(Basename,'.');
   if ( tmp == NULL ) {
-    fprintf(
-        stderr,
-        "Makename: Cannot create filename _%3s%d from %s\n",
-        Vectype, Nrhs, Basename
-        );
+    fprintf(stderr,"Makename: Cannot create filename _%3s%d from %s\n",Vectype,Nrhs,Basename);
     exit(1);
   }
   tmp = substr(tail,0,tmp-tail);
   Filename = (char *) malloc((strlen(tmp)+10));
   strcpy(Filename,tmp);
-  sprintf(
-      &Filename[strlen(tmp)],
-      "_%3s%d.mtx",
-      Vectype, Nrhs
-      );
-  tmp = NULL;
+  sprintf(&Filename[strlen(tmp)],"_%3s%d.mtx",Vectype,Nrhs);
   return Filename;
 }
