@@ -293,7 +293,7 @@ FILE * readHB_newind(
 {
   FILE *in_file;
   int Nrhs;
-  int Ptrcrd, Indcrd, Valcrdl;
+  int Ptrcrd, Indcrd, Valcrd;
   int Rhscrd = 0;
   char Title[73], Key[9], Type[4], Rhstype[4];
   char Ptrfmt[17], Indfmt[17], Rhsfmt[21],Valfmt[21];
