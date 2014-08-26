@@ -19,20 +19,42 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-set(SOURCES
-  iohb.c
-  mmio.c
-  )
-set(HEADERS
-  iohb.h
-  mmio.h
+set(input_files
+  add20.rua
+  dwg961a.cua
+  illc1033.rra
+  mahindas.rua
+  utm300.rua
+  young1c.csa
   )
 
-add_library(hbio ${SOURCES})
-
-SET_TARGET_PROPERTIES(
-  hbio PROPERTIES
-  PUBLIC_HEADER "${HEADERS}"
-  VERSION ${hbio_VERSION}
-  SOVERSION ${hbio_VERSION_MAJOR}
+# Download the files
+INCLUDE(ExternalData)
+set(
+  ExternalData_URL_TEMPLATES
+  "https://downloads.sourceforge.net/project/hbio-data/%(algo)/%(hash)"
   )
+foreach(file ${input_files})
+  ExternalData_Expand_Arguments(
+    HbioTestFetchData
+    OUT_DATA DATA{${CMAKE_SOURCE_DIR}/data/${file}}
+    )
+  # Replace the file extension by "mtx"
+  string(REGEX REPLACE "\\..*" ".mtx" file_mtx ${file})
+  ExternalData_Expand_Arguments(
+    HbioTestFetchData
+    OUT_DATA DATA{${CMAKE_SOURCE_DIR}/data/${file_mtx}}
+    )
+endforeach()
+ExternalData_Add_Target(HbioTestFetchData)
+
+# Finally add the tests
+foreach(file ${input_files})
+  string(REGEX REPLACE "\\..*" ".mtx" file_mtx ${file})
+  add_test(iotest_${file}
+    ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/test/generator_test.cmake
+    "${CMAKE_BINARY_DIR}/bin/hb2mtxstrm"
+    "${CMAKE_BINARY_DIR}/data/${file}"
+    "${CMAKE_BINARY_DIR}/data/${file_mtx}"
+    )
+endforeach()
