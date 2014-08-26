@@ -41,8 +41,12 @@ elseif(MSVC)
   endif()
 endif()
 
-enable_testing()
 
 add_subdirectory(src)
 add_subdirectory(bin)
-add_subdirectory(test)
+
+option(ENABLE_TESTS "ENABLE_TESTS" ON)
+if(ENABLE_TESTS)
+  enable_testing()
+  add_subdirectory(test)
+endif()
