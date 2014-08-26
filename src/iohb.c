@@ -252,7 +252,8 @@ int readHB_info(
   /*                                                                          */
   /****************************************************************************/
   FILE *in_file;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Nrow, Ncol, Nnzero;
   char *mat_type;
   char Title[73], Key[9], Rhstype[4];
@@ -410,7 +411,8 @@ int readHB_mat_double(
   /****************************************************************************/
   FILE *in_file;
   int i,j,ind,col,offset,count,last,Nrhs;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Nrow, Ncol, Nnzero, Nentries;
   int Ptrperline, Ptrwidth, Indperline, Indwidth;
   int Valperline, Valwidth, Valprec;
@@ -596,7 +598,8 @@ int readHB_aux_double(const char* filename, const char AuxType, double b[])
   /****************************************************************************/
   FILE *in_file;
   int i,j,n,maxcol,start,stride,col,last,linel;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Nrow, Ncol, Nnzero, Nentries;
   int Nrhs, nvecs, rhsi;
   int Rhsperline, Rhswidth, Rhsprec;
@@ -736,28 +739,48 @@ int readHB_aux_double(const char* filename, const char AuxType, double b[])
   return Nrhs;
 }
 
-int readHB_newaux_double(const char* filename, const char AuxType, double** b)
+int readHB_newaux_double(
+    const char* filename,
+    const char AuxType,
+    double** b
+    )
 {
   int Nrhs,M,N,nonzeros;
   char *Type;
 
   readHB_info(filename, &M, &N, &nonzeros, &Type, &Nrhs);
   if ( Nrhs <= 0 ) {
-    fprintf(stderr,"Warn: Requested read of aux vector(s) when none are present.\n");
+    fprintf(
+        stderr,
+        "Warn: Requested read of aux vector(s) when none are present.\n"
+        );
     return 0;
   } else {
     if ( Type[0] == 'C' ) {
-      fprintf(stderr, "Warning: Reading complex aux vector(s) from HB file %s.",filename);
-      fprintf(stderr, "         Real and imaginary parts will be interlaced in b[].");
+      fprintf(
+          stderr,
+          "Warning: Reading complex aux vector(s) from HB file %s.",
+          filename
+          );
+      fprintf(
+          stderr,
+          "         Real and imaginary parts will be interlaced in b[]."
+          );
       *b = (double *)malloc(M*Nrhs*sizeof(double)*2);
-      if ( *b == NULL ) IOHBTerminate("Insufficient memory for rhs.\n");
+      if ( *b == NULL )
+        IOHBTerminate("Insufficient memory for rhs.\n");
+      Type = NULL;
       return readHB_aux_double(filename, AuxType, *b);
     } else {
       *b = (double *)malloc(M*Nrhs*sizeof(double));
-      if ( *b == NULL ) IOHBTerminate("Insufficient memory for rhs.\n");
+      if ( *b == NULL )
+        IOHBTerminate("Insufficient memory for rhs.\n");
+      Type = NULL;
       return readHB_aux_double(filename, AuxType, *b);
     }
   }
+  Type = NULL;
+  return 0;
 }
 
 int writeHB_mat_double(const char* filename, int M, int N,
@@ -942,8 +965,13 @@ int writeHB_mat_double(const char* filename, int M, int N,
 
 }
 
-int readHB_mat_char(const char* filename, int colptr[], int rowind[],
-    char val[], char* Valfmt)
+int readHB_mat_char(
+    const char* filename,
+    int colptr[],
+    int rowind[],
+    char val[],
+    char* Valfmt
+    )
 {
   /****************************************************************************/
   /*  This function opens and reads the specified file, interpreting its      */
@@ -966,7 +994,8 @@ int readHB_mat_char(const char* filename, int colptr[], int rowind[],
   FILE *in_file;
   int i,j,ind,col,offset,count,last;
   int Nrow,Ncol,Nnzero,Nentries,Nrhs;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Ptrperline, Ptrwidth, Indperline, Indwidth;
   int Valperline, Valwidth, Valprec;
   int Valflag;           /* Indicates 'E','D', or 'F' float format */
@@ -1084,7 +1113,7 @@ int readHB_mat_char(const char* filename, int colptr[], int rowind[],
       }
     }
   }
-
+  fclose(in_file);
   return 1;
 }
 
@@ -1093,7 +1122,8 @@ int readHB_newmat_char(const char* filename, int* M, int* N, int* nonzeros, int*
 {
   FILE *in_file;
   int Nrhs;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Valperline, Valwidth, Valprec;
   int Valflag;           /* Indicates 'E','D', or 'F' float format */
   char Title[73], Key[9], Type[4], Rhstype[4];
@@ -1161,7 +1191,8 @@ int readHB_aux_char(const char* filename, const char AuxType, char b[])
   FILE *in_file;
   int i,j,n,maxcol,start,stride,col,last,linel,nvecs,rhsi;
   int Nrow, Ncol, Nnzero, Nentries,Nrhs;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Rhsperline, Rhswidth, Rhsprec;
   int Rhsflag;
   char Title[73], Key[9], Type[4], Rhstype[4];
@@ -1281,11 +1312,11 @@ int readHB_aux_char(const char* filename, const char AuxType, char b[])
       }
       col += Rhswidth;
     }
-    b+=Nentries*Rhswidth;
+    b += Nentries*Rhswidth;
 
     /*  Skip any interleaved Guess/eXact vectors */
 
-    for (i=0;i<stride;i++) {
+    for (i=0; i<stride; i++) {
       col += Rhswidth;
       if ( col >= ( maxcol<linel?maxcol:linel ) ) {
         fgets(line, BUFSIZ, in_file);
@@ -1295,10 +1326,7 @@ int readHB_aux_char(const char* filename, const char AuxType, char b[])
         col = 0;
       }
     }
-
   }
-
-
   fclose(in_file);
   return Nrhs;
 }
@@ -1367,7 +1395,8 @@ int writeHB_mat_char(const char* filename, int M, int N,
   int Ptrperline, Ptrwidth, Indperline, Indwidth;
   int Rhsperline, Rhswidth, Rhsprec;
   int Rhsflag;
-  int Valperline, Valwidth, Valprec;
+  int Valperline = 0;
+  int Valwidth, Valprec;
   int Valflag;           /* Indicates 'E','D', or 'F' float format */
   char pformat[16],iformat[16],vformat[19],rformat[19];
 

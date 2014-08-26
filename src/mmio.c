@@ -289,16 +289,21 @@ int mm_read_mtx_crd(char *fname, int *M, int *N, int *nz, int **I, int **J,
       return MM_COULD_NOT_READ_FILE;
 
 
-  if ((ret_code = mm_read_banner(f, matcode)) != 0)
+  if ((ret_code = mm_read_banner(f, matcode)) != 0) {
+    fclose(f);
     return ret_code;
+  }
 
   if (!(mm_is_valid(*matcode) && mm_is_sparse(*matcode) &&
-        mm_is_matrix(*matcode)))
+        mm_is_matrix(*matcode))) {
+    fclose(f);
     return MM_UNSUPPORTED_TYPE;
+  }
 
-  if ((ret_code = mm_read_mtx_crd_size(f, M, N, nz)) != 0)
+  if ((ret_code = mm_read_mtx_crd_size(f, M, N, nz)) != 0) {
+    fclose(f);
     return ret_code;
-
+  }
 
   *I = (int *)  malloc(*nz * sizeof(int));
   *J = (int *)  malloc(*nz * sizeof(int));
@@ -326,7 +331,8 @@ int mm_read_mtx_crd(char *fname, int *M, int *N, int *nz, int **I, int **J,
     if (ret_code != 0) return ret_code;
   }
 
-  if (f != stdin) fclose(f);
+  if (f != stdin)
+    fclose(f);
   return 0;
 }
 
