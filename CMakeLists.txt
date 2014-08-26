@@ -27,6 +27,20 @@ set(hbio_VERSION_MAJOR 1)
 set(hbio_VERSION_MINOR 0)
 set(hbio_VERSION ${hbio_VERSION_MAJOR}.${hbio_VERSION_MINOR})
 
+# Set warning levels
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+  # Update if necessary
+  set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wpedantic -Werror")
+elseif(MSVC)
+  # Force to always compile with W4
+  if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+    string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS
+      "${CMAKE_CXX_FLAGS}")
+  else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+  endif()
+endif()
+
 enable_testing()
 
 add_subdirectory(src)
