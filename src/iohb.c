@@ -265,7 +265,10 @@ int readHB_info(
 
   if ( (in_file = fopen( filename, "r")) == NULL ) {
     fprintf(stderr,"Error: Cannot open file: %s\n",filename);
-    mat_type = NULL;
+    if (mat_type) {
+      free(mat_type);
+      mat_type = NULL;
+    }
     return 0;
   }
 
@@ -571,9 +574,13 @@ int readHB_newmat_double(
       if ( *val == NULL ) IOHBTerminate("Insufficient memory for val.\n");
     }
   }  /* No val[] space needed if pattern only */
-  Type = NULL;
-  return readHB_mat_double(filename, *colptr, *rowind, *val);
 
+  if (Type) {
+    free(Type);
+    Type = NULL;
+  }
+
+  return readHB_mat_double(filename, *colptr, *rowind, *val);
 }
 
 int readHB_aux_double(
@@ -651,6 +658,7 @@ int readHB_aux_double(
 
   if ( AuxType == 'G' && Rhstype[1] != 'G' ) {
     fprintf(stderr, "Warn: Attempt to read auxillary Guess vector(s) when none are present.\n");
+    fclose(in_file);
     return 0;
   }
   if ( AuxType == 'X' && Rhstype[2] != 'X' ) {
@@ -765,6 +773,7 @@ int readHB_newaux_double(
         stderr,
         "Warn: Requested read of aux vector(s) when none are present.\n"
         );
+    Type = NULL;
     return 0;
   } else {
     if ( Type[0] == 'C' ) {
@@ -1124,7 +1133,10 @@ int readHB_mat_char(
       }
     }
   }
-  ThisElement = NULL;
+  if (ThisElement) {
+    free(ThisElement);
+    ThisElement = NULL;
+  }
   fclose(in_file);
   return 1;
 }
@@ -1557,8 +1569,9 @@ int writeHB_mat_char(const char* filename, int M, int N,
   if ( fclose(out_file) != 0){
     fprintf(stderr,"Error closing file in writeHB_mat_char().\n");
     return 0;
-  } else return 1;
-
+  } else {
+    return 1;
+  }
 }
 
 int ParseIfmt(char* fmt, int* perline, int* width)
@@ -1643,6 +1656,10 @@ int ParseRfmt(char* fmt, int* perline, int* width, int* prec, int* flag)
     tmp = substr(fmt,tmp - fmt + 1, strchr(fmt,'.') - tmp - 1);
   } else {
     tmp = substr(fmt,tmp - fmt + 1, strchr(fmt,')') - tmp - 1);
+  }
+  if (tmp) {
+    free(tmp);
+    tmp = NULL;
   }
   return *width = atoi(tmp);
 }
