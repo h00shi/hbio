@@ -5,10 +5,10 @@ Fri Aug 15 16:29:47 EDT 1997
                    (use 'hbmat2mtx' for PATTERN matrices)
 
                      ***   CONVERSION ROUTINE    ***
-                      
-                 Harwell-Boeing            Matrix Market 
+
+                 Harwell-Boeing            Matrix Market
                    assembled       --> sparse coordinate file
-                    matrix           
+                    matrix
               ( real data transferred as character strings )
                                          ---------
 
@@ -27,8 +27,8 @@ Fri Aug 15 16:29:47 EDT 1997
  supporting documentation.
 
  Neither the Author nor the Institution (National Institute of Standards
- and Technology) make any representations about the suitability of this 
- software for any purpose. This software is provided "as is" without 
+ and Technology) make any representations about the suitability of this
+ software for any purpose. This software is provided "as is" without
  expressed or implied warranty.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 */
@@ -67,7 +67,7 @@ void main(int argc, char *argv[])
       printf("Usage: %s HBfile\n\n", argv[0]);
       printf("   Sends Matrix Market formatted output to stdout\n");
       exit(-1);
-    } 
+    }
 
     in_file = fopen( argv[1], "r");
     if (in_file == NULL)
@@ -134,7 +134,7 @@ void main(int argc, char *argv[])
     if ( Type[0] == 'C') repeat=1;
     count = 0;
     colcount = &colptr[1];
-    items = 0; 
+    items = 0;
     for (i=0;i<Valcrd;i++)
     {
        fgets(line, BUFSIZ, in_file);
@@ -151,7 +151,7 @@ void main(int argc, char *argv[])
           if (count == Nnzero) break;
           if (count == *colcount-1) colcount++;
           strncpy(ThisElement,line+col,Valwidth);
-          *(ThisElement+Valwidth) = (char) NULL;
+          *(ThisElement+Valwidth) = '\0';
           if ( Valflag != 'F' && strchr(ThisElement,'E') == NULL ) {
              /* insert a char prefix for exp */
              last = strlen(ThisElement);
@@ -165,10 +165,10 @@ void main(int argc, char *argv[])
           }
          items++;
          if (items==1) fprintf(stdout,format,rowind[count],colcount-colptr);
-         if (items > repeat) { 
+         if (items > repeat) {
             fprintf(stdout,rformat,ThisElement);
             fprintf(stdout,"\n");
-            count++; 
+            count++;
             items=0;
          } else {
             fprintf(stdout,rformat,ThisElement);
@@ -176,7 +176,7 @@ void main(int argc, char *argv[])
          col += Valwidth;
        }
     }
-       
+
 }
 
 FILE * readHB_ind(const char* filename, int colptr[], int rowind[])
@@ -239,14 +239,14 @@ FILE * readHB_ind(const char* filename, int colptr[], int rowind[])
     for (i=0;i<Ptrcrd;i++)
     {
        fgets(line, BUFSIZ, in_file);
-       if ( sscanf(line,"%*s") < 0 ) 
+       if ( sscanf(line,"%*s") < 0 )
          IOHBTerminate("iohb.c: Null (or blank) line in pointer data region of HB file.\n");
        col =  0;
        for (ind = 0;ind<Ptrperline;ind++)
        {
           if (count > Ncol) break;
           strncpy(ThisElement,line+col,Ptrwidth);
-          *(ThisElement+Ptrwidth) = (char) NULL;
+          *(ThisElement+Ptrwidth) = '\0';
 /*          ThisElement = substr(line,col,Ptrwidth); */
           colptr[count] = atoi(ThisElement)-offset;
           count++; col += Ptrwidth;
@@ -262,14 +262,14 @@ FILE * readHB_ind(const char* filename, int colptr[], int rowind[])
     for (i=0;i<Indcrd;i++)
     {
        fgets(line, BUFSIZ, in_file);
-       if ( sscanf(line,"%*s") < 0 ) 
+       if ( sscanf(line,"%*s") < 0 )
          IOHBTerminate("iohb.c: Null (or blank) line in index data region of HB file.\n");
        col =  0;
        for (ind = 0;ind<Indperline;ind++)
        {
           if (count == Nnzero) break;
           strncpy(ThisElement,line+col,Indwidth);
-          *(ThisElement+Indwidth) = (char) NULL;
+          *(ThisElement+Indwidth) = '\0';
           /* ThisElement = substr(line,col,Indwidth);*/
           rowind[count] = atoi(ThisElement)-offset;
           count++; col += Indwidth;
@@ -292,7 +292,7 @@ FILE * readHB_newind(const char* filename, int* M, int* N, int* nonzeros, int** 
       fprintf(stderr,"Error: Cannot open file: %s\n",filename);
       return 0;
      }
-    
+
     readHB_header(in_file, Title, Key, Type, M, N, nonzeros, &Nrhs,
                   Ptrfmt, Indfmt, Valfmt, Rhsfmt,
                   &Ptrcrd, &Indcrd, &Valcrd, &Rhscrd, Rhstype);
@@ -302,5 +302,5 @@ FILE * readHB_newind(const char* filename, int* M, int* N, int* nonzeros, int** 
         if ( *colptr == NULL ) IOHBTerminate("Insufficient memory for colptr.\nhb2mtxstrm.c: Line 279 approx.");
         *rowind = (int *)malloc(*nonzeros*sizeof(int));
         if ( *rowind == NULL ) IOHBTerminate("Insufficient memory for rowind.\nhb2mtxstrm.c: Line 281 approx.");
-	return readHB_ind(filename, *colptr, *rowind);
+return readHB_ind(filename, *colptr, *rowind);
 }
