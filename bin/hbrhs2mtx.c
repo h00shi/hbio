@@ -40,7 +40,8 @@ int main(int argc, char *argv[])
   FILE *in_file;
   FILE *out_file;
   int i, j;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Rhsperline, Rhswidth, Rhsprec;
   int Rhsflag;           /* Indicates 'E','D', or 'F' float format */
   int nvecs;

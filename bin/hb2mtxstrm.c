@@ -49,7 +49,8 @@ int main(int argc, char *argv[])
   char Title[73], Key[9], Rhstype[4];
   char Type[4];
   char Ptrfmt[17], Indfmt[17], Valfmt[21], Rhsfmt[21];
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Indperline, Indwidth;
   int Valperline, Valwidth, Valprec;
   int Valflag;           /* Indicates 'E','D', or 'F' float format */
@@ -207,7 +208,8 @@ FILE * readHB_ind(
   FILE *in_file;
   int i,ind,col,offset,count;
   int Nrow,Ncol,Nnzero,Nrhs;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Ptrperline, Ptrwidth, Indperline, Indwidth;
   int Valperline, Valwidth, Valprec;
   int Valflag;           /* Indicates 'E','D', or 'F' float format */

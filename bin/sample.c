@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 {
   int M, N, nonzeros, Nrhs;
   int *colptr, *rowind;
-  double *val;
+  double *val = NULL;
   double *rhs;
   int rhsentries = 0;
   double *guess;

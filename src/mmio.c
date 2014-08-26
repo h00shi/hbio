@@ -314,21 +314,30 @@ int mm_read_mtx_crd(char *fname, int *M, int *N, int *nz, int **I, int **J,
     *val = (double *) malloc(*nz * 2 * sizeof(double));
     ret_code = mm_read_mtx_crd_data(f, *M, *N, *nz, *I, *J, *val,
         *matcode);
-    if (ret_code != 0) return ret_code;
+    if (ret_code != 0) {
+      fclose(f);
+      return ret_code;
+    }
   }
   else if (mm_is_real(*matcode))
   {
     *val = (double *) malloc(*nz * sizeof(double));
     ret_code = mm_read_mtx_crd_data(f, *M, *N, *nz, *I, *J, *val,
         *matcode);
-    if (ret_code != 0) return ret_code;
+    if (ret_code != 0) {
+      fclose(f);
+      return ret_code;
+    }
   }
 
   else if (mm_is_pattern(*matcode))
   {
     ret_code = mm_read_mtx_crd_data(f, *M, *N, *nz, *I, *J, *val,
         *matcode);
-    if (ret_code != 0) return ret_code;
+    if (ret_code != 0) {
+      fclose(f);
+      return ret_code;
+    }
   }
 
   if (f != stdin)

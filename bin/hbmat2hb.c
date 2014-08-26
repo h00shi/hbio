@@ -41,11 +41,12 @@ int main(int argc, char *argv[])
   char Title[73], Key[9], Rhstype[4];
   char Type[4];
   char Ptrfmt[17], Indfmt[17], Valfmt[21], Rhsfmt[21];
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int nvecs;
   int Nrow, Ncol, Nnzero;
   int Nrhs;
-  char *valc;
+  char *valc = NULL;
   char *Rhsc;
   char *Estc;
   char *Slnc;

@@ -260,10 +260,12 @@ int readHB_info(
   char Ptrfmt[17], Indfmt[17], Valfmt[21], Rhsfmt[21];
 
   mat_type = (char *) malloc(4);
-  if ( mat_type == NULL ) IOHBTerminate("Insufficient memory for mat_typen");
+  if ( mat_type == NULL )
+    IOHBTerminate("Insufficient memory for mat_typen");
 
   if ( (in_file = fopen( filename, "r")) == NULL ) {
     fprintf(stderr,"Error: Cannot open file: %s\n",filename);
+    mat_type = NULL;
     return 0;
   }
 
@@ -569,11 +571,16 @@ int readHB_newmat_double(
       if ( *val == NULL ) IOHBTerminate("Insufficient memory for val.\n");
     }
   }  /* No val[] space needed if pattern only */
+  Type = NULL;
   return readHB_mat_double(filename, *colptr, *rowind, *val);
 
 }
 
-int readHB_aux_double(const char* filename, const char AuxType, double b[])
+int readHB_aux_double(
+    const char* filename,
+    const char AuxType,
+    double b[]
+    )
 {
   /****************************************************************************/
   /*  This function opens and reads the specified file, placing auxillary     */
@@ -647,7 +654,11 @@ int readHB_aux_double(const char* filename, const char AuxType, double b[])
     return 0;
   }
   if ( AuxType == 'X' && Rhstype[2] != 'X' ) {
-    fprintf(stderr, "Warn: Attempt to read auxillary eXact solution vector(s) when none are present.\n");
+    fprintf(
+        stderr,
+        "Warn: Attempt to read auxillary eXact solution vector(s) when none are present.\n"
+        );
+    fclose(in_file);
     return 0;
   }
 
@@ -1113,6 +1124,7 @@ int readHB_mat_char(
       }
     }
   }
+  ThisElement = NULL;
   fclose(in_file);
   return 1;
 }
@@ -1235,10 +1247,12 @@ int readHB_aux_char(const char* filename, const char AuxType, char b[])
 
   if ( AuxType == 'G' && Rhstype[1] != 'G' ) {
     fprintf(stderr, "Warn: Attempt to read auxillary Guess vector(s) when none are present.\n");
+    fclose(in_file);
     return 0;
   }
   if ( AuxType == 'X' && Rhstype[2] != 'X' ) {
     fprintf(stderr, "Warn: Attempt to read auxillary eXact solution vector(s) when none are present.\n");
+    fclose(in_file);
     return 0;
   }
 
@@ -1334,7 +1348,8 @@ int readHB_aux_char(const char* filename, const char AuxType, char b[])
 int readHB_newaux_char(const char* filename, const char AuxType, char** b, char** Rhsfmt)
 {
   FILE *in_file;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrd;
+  int Rhscrd = 0;
   int Nrow,Ncol,Nnzero,Nrhs;
   int Rhsperline, Rhswidth, Rhsprec;
   int Rhsflag;
