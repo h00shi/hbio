@@ -640,6 +640,7 @@ int readHB_aux_double(
   if (Nrhs <= 0)
   {
     fprintf(stderr, "Warn: Attempt to read auxillary vector(s) when none are present.\n");
+    fclose(in_file);
     return 0;
   }
   if (Rhstype[0] != 'F' )
