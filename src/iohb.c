@@ -635,14 +635,12 @@ int readHB_aux_double(
   if (Nrhs <= 0)
   {
     fprintf(stderr, "Warn: Attempt to read auxillary vector(s) when none are present.\n");
-    fclose(in_file);
     return 0;
   }
   if (Rhstype[0] != 'F' )
   {
     fprintf(stderr,"Warn: Attempt to read auxillary vector(s) which are not stored in Full form.\n");
     fprintf(stderr,"       Rhs must be specified as full. \n");
-    fclose(in_file);
     return 0;
   }
 
@@ -775,10 +773,7 @@ int readHB_newaux_double(
         stderr,
         "Warn: Requested read of aux vector(s) when none are present.\n"
         );
-    if (Type) {
-      free(Type);
-      Type = NULL;
-    }
+    Type = NULL;
     return 0;
   } else {
     if ( Type[0] == 'C' ) {
@@ -1095,10 +1090,7 @@ int readHB_mat_char(
       count++; col += Indwidth;
     }
   }
-  if (ThisElement) {
-    free(ThisElement);
-    ThisElement = NULL;
-  }
+  free(ThisElement);
 
   /*  Read array of values:  AS CHARACTERS*/
 
@@ -1244,14 +1236,12 @@ int readHB_aux_char(const char* filename, const char AuxType, char b[])
   if (Nrhs <= 0)
   {
     fprintf(stderr, "Warn: Attempt to read auxillary vector(s) when none are present.\n");
-    fclose(in_file);
     return 0;
   }
   if (Rhstype[0] != 'F' )
   {
     fprintf(stderr,"Warn: Attempt to read auxillary vector(s) which are not stored in Full form.\n");
     fprintf(stderr,"       Rhs must be specified as full. \n");
-    fclose(in_file);
     return 0;
   }
 
@@ -1600,10 +1590,6 @@ int ParseIfmt(char* fmt, int* perline, int* width)
   *perline = atoi(tmp);
   tmp = strchr(fmt,'I');
   tmp = substr(fmt,tmp - fmt + 1, strchr(fmt,')') - tmp - 1);
-  if (tmp) {
-    free(tmp);
-    tmp = NULL;
-  }
   return *width = atoi(tmp);
 }
 
@@ -1661,14 +1647,10 @@ int ParseRfmt(char* fmt, int* perline, int* width, int* prec, int* flag)
     fprintf(stderr,"Real format %s in H/B file not supported.\n",fmt);
     return 0;
   }
-  tmp = strchr(fmt, '(');
-  tmp = substr(fmt, tmp - fmt + 1, strchr(fmt,*flag) - tmp - 1);
+  tmp = strchr(fmt,'(');
+  tmp = substr(fmt,tmp - fmt + 1, strchr(fmt,*flag) - tmp - 1);
   *perline = atoi(tmp);
-  if (tmp) {
-    free(tmp);
-    tmp = NULL;
-  }
-  tmp = strchr(fmt, *flag);
+  tmp = strchr(fmt,*flag);
   if ( strchr(fmt,'.') ) {
     *prec = atoi( substr( fmt, strchr(fmt,'.') - fmt + 1, strchr(fmt,')') - strchr(fmt,'.')-1) );
     tmp = substr(fmt,tmp - fmt + 1, strchr(fmt,'.') - tmp - 1);

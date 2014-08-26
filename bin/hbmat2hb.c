@@ -131,9 +131,5 @@ char * Makename(
       "_%3s%d.mtx\0",
       Vectype, Nrhs
       );
-  if (tmp) {
-    free(tmp);
-    tmp = NULL;
-  }
   return Filename;
 }

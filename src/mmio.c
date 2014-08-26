@@ -356,14 +356,11 @@ int mm_write_banner(FILE *f, MM_typecode matcode)
   return 0;
 }
 
-int mm_write_mtx_crd(
-    char fname[], int M, int N, int nz, int I[], int J[],
-    double val[], MM_typecode matcode
-    )
+int mm_write_mtx_crd(char fname[], int M, int N, int nz, int I[], int J[],
+    double val[], MM_typecode matcode)
 {
   FILE *f;
   int i;
-  char * tmp;
 
   if (strcmp(fname, "stdout") == 0)
     f = stdout;
@@ -373,12 +370,7 @@ int mm_write_mtx_crd(
 
   /* print banner followed by typecode */
   fprintf(f, "%s ", MatrixMarketBanner);
-  tmp = mm_typecode_to_str(matcode);
-  fprintf(f, "%s\n", tmp);
-  if (tmp) {
-    free(tmp);
-    tmp = NULL;
-  }
+  fprintf(f, "%s\n", mm_typecode_to_str(matcode));
 
   /* print matrix sizes and nonzeros */
   fprintf(f, "%d %d %d\n", M, N, nz);
