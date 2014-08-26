@@ -1,3 +1,6 @@
+[![Build
+Status](https://travis-ci.org/nschloe/hbio.svg?branch=master)](https://travis-ci.org/nschloe/hbio)
+
 This is fork of the original (now unmaintained) Harwell-Boeing File I/O in C
 <http://math.nist.gov/~KRemington/harwell_io/README.html>.
 
