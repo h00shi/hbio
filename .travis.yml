@@ -1,0 +1,5 @@
+language: c
+install:
+  - cmake .
+  - make
+script: ctest -VV
