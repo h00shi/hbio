@@ -265,7 +265,10 @@ int readHB_info(
 
   if ( (in_file = fopen( filename, "r")) == NULL ) {
     fprintf(stderr,"Error: Cannot open file: %s\n",filename);
-    mat_type = NULL;
+    if (mat_type) {
+      free(mat_type);
+      mat_type = NULL;
+    }
     return 0;
   }
 
@@ -446,7 +449,8 @@ int readHB_mat_double(
   /* then storage entries are offset by 1                  */
 
   ThisElement = (char *) malloc(Ptrwidth+1);
-  if ( ThisElement == NULL ) IOHBTerminate("Insufficient memory for ThisElement.");
+  if ( ThisElement == NULL )
+    IOHBTerminate("Insufficient memory for ThisElement.");
   *(ThisElement+Ptrwidth) = '\0';
   count=0;
   for (i=0;i<Ptrcrd;i++)
@@ -464,12 +468,16 @@ int readHB_mat_double(
       count++; col += Ptrwidth;
     }
   }
-  free(ThisElement);
+  if (ThisElement) {
+    free(ThisElement);
+    ThisElement = NULL;
+  }
 
   /*  Read row index array:  */
 
   ThisElement = (char *) malloc(Indwidth+1);
-  if ( ThisElement == NULL ) IOHBTerminate("Insufficient memory for ThisElement.");
+  if ( ThisElement == NULL )
+    IOHBTerminate("Insufficient memory for ThisElement.");
   *(ThisElement+Indwidth) = '\0';
   count = 0;
   for (i=0;i<Indcrd;i++)
@@ -571,7 +579,11 @@ int readHB_newmat_double(
       if ( *val == NULL ) IOHBTerminate("Insufficient memory for val.\n");
     }
   }  /* No val[] space needed if pattern only */
-  Type = NULL;
+
+  if (Type) {
+    free(Type);
+    Type = NULL;
+  }
   return readHB_mat_double(filename, *colptr, *rowind, *val);
 
 }
@@ -651,6 +663,7 @@ int readHB_aux_double(
 
   if ( AuxType == 'G' && Rhstype[1] != 'G' ) {
     fprintf(stderr, "Warn: Attempt to read auxillary Guess vector(s) when none are present.\n");
+    fclose(in_file);
     return 0;
   }
   if ( AuxType == 'X' && Rhstype[2] != 'X' ) {
@@ -765,6 +778,10 @@ int readHB_newaux_double(
         stderr,
         "Warn: Requested read of aux vector(s) when none are present.\n"
         );
+    if (Type) {
+      free(Type);
+      Type = NULL;
+    }
     return 0;
   } else {
     if ( Type[0] == 'C' ) {
@@ -1124,7 +1141,10 @@ int readHB_mat_char(
       }
     }
   }
-  ThisElement = NULL;
+  if (ThisElement) {
+    free(ThisElement);
+    ThisElement = NULL;
+  }
   fclose(in_file);
   return 1;
 }
