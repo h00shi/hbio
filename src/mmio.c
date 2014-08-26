@@ -337,6 +337,8 @@ int mm_write_banner(FILE *f, MM_typecode matcode)
   fprintf(f, "%s ", MatrixMarketBanner);
   fprintf(f, "%s\n", str);
   free(str);
+
+  return 0;
 }
 
 int mm_write_mtx_crd(char fname[], int M, int N, int nz, int I[], int J[],
@@ -387,13 +389,10 @@ char  *mm_typecode_to_str(MM_typecode matcode)
 {
   char buffer[MM_MAX_LINE_LENGTH];
   char *types[4];
-  int error =0;
 
   /* check for MTX type */
   if (mm_is_matrix(matcode))
     types[0] = MM_MTX_STR;
-  else
-    error=1;
 
   /* check for CRD or ARR matrix */
   if (mm_is_sparse(matcode))
