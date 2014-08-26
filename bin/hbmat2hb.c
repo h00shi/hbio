@@ -115,7 +115,11 @@ char * Makename(
   char *Filename;
   tmp = strchr(Basename,'.');
   if ( tmp == NULL ) {
-    printf(stderr,"Makename: Cannot create filename _%3s%d from %s\n",Vectype,Nrhs,Basename);
+    printf(
+        stderr,
+        "Makename: Cannot create filename _%3s%d from %s\n",
+        Vectype, Nrhs, Basename
+        );
     exit(1);
   }
   tmp = substr(Basename,0,tmp-Basename);
@@ -124,8 +128,7 @@ char * Makename(
   sprintf(
       &Filename[strlen(tmp)],
       "_%3s%d.mtx\0",
-      Vectype,
-      Nrhs
+      Vectype, Nrhs
       );
   return Filename;
 }

@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   int *colptr, *rowind;
   double *val;
   double *rhs;
-  int rhsentries;
+  int rhsentries = 0;
   double *guess;
   double *exact = NULL;
   char *Type;
@@ -70,14 +70,27 @@ int main(int argc, char *argv[])
 
   /* Generate a new Guess vector (all zeros) */
 
-  if ( Type[0] == 'R' ) rhsentries = M*Nrhs;
-  else if ( Type[0] == 'C' ) rhsentries = 2*M*Nrhs;
+  if ( Type[0] == 'R' )
+    rhsentries = M*Nrhs;
+  else if ( Type[0] == 'C' )
+    rhsentries = 2*M*Nrhs;
+
   guess = (double *) malloc(rhsentries*sizeof(double));
-  for (i=0;i<rhsentries;i++) guess[i] = 0;
+  for (i = 0; i < rhsentries ;i++)
+    guess[i] = 0;
+
   if (Nrhs > 0) {
-    fprintf(stderr,"Writing the matrix and right-hand-side/guess vector(s) from %s...\n",argv[1]);
+    fprintf(
+        stderr,
+        "Writing the matrix and right-hand-side/guess vector(s) from %s...\n",
+        argv[1]
+        );
   } else {
-    fprintf(stderr,"Writing the matrix from %s...\n",argv[1]);
+    fprintf(
+        stderr,
+        "Writing the matrix from %s...\n",
+        argv[1]
+        );
   }
   writeHB_mat_double(argv[2], M, N, nonzeros, colptr, rowind, val, Nrhs, rhs,
       guess, exact, "Test Title", "Test Key", Type, Ptrfmt,Indfmt,Valfmt,Rhsfmt,"FGN");

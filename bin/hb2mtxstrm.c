@@ -180,7 +180,11 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-FILE * readHB_ind(const char* filename, int colptr[], int rowind[])
+FILE * readHB_ind(
+    const char* filename,
+    int colptr[],
+    int rowind[]
+    )
 {
 /****************************************************************************/
 /*  This function opens and reads the specified file, interpreting its      */
@@ -289,7 +293,8 @@ FILE * readHB_newind(
 {
   FILE *in_file;
   int Nrhs;
-  int Ptrcrd, Indcrd, Valcrd, Rhscrd;
+  int Ptrcrd, Indcrd, Valcrdl;
+  int Rhscrd = 0;
   char Title[73], Key[9], Type[4], Rhstype[4];
   char Ptrfmt[17], Indfmt[17], Rhsfmt[21],Valfmt[21];
 
