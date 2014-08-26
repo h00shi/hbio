@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   double *rhs;
   int rhsentries;
   double *guess;
-  double *exact;
+  double *exact = NULL;
   char *Type;
   char Ptrfmt[]="(13I6)";
   char Indfmt[]="(16I5)";
