@@ -41,6 +41,14 @@ elseif(MSVC)
   endif()
 endif()
 
+option(ENABLE_GCOV "Enable gcov support" OFF)
+if(ENABLE_GCOV)
+  message(STATUS "Enabling gcov support")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}
+  --coverage")
+endif()
 
 add_subdirectory(src)
 add_subdirectory(bin)
