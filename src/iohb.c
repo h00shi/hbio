@@ -225,8 +225,14 @@ char* substr(const char* S, const int pos, const int len);
 void upcase(char* S);
 void IOHBTerminate(char* message);
 
-int readHB_info(const char* filename, int* M, int* N, int* nz, char** Type,
-    int* Nrhs)
+int readHB_info(
+    const char* filename,
+    int* M,
+    int* N,
+    int* nz,
+    char** Type,
+    int* Nrhs
+    )
 {
   /****************************************************************************/
   /*  The readHB_info function opens and reads the header information from    */
@@ -290,11 +296,25 @@ int readHB_info(const char* filename, int* M, int* N, int* nz, char** Type,
 
 
 
-int readHB_header(FILE* in_file, char* Title, char* Key, char* Type,
-    int* Nrow, int* Ncol, int* Nnzero, int* Nrhs,
-    char* Ptrfmt, char* Indfmt, char* Valfmt, char* Rhsfmt,
-    int* Ptrcrd, int* Indcrd, int* Valcrd, int* Rhscrd,
-    char *Rhstype)
+int readHB_header(
+    FILE* in_file,
+    char* Title,
+    char* Key,
+    char* Type,
+    int* Nrow,
+    int* Ncol,
+    int* Nnzero,
+    int* Nrhs,
+    char* Ptrfmt,
+    char* Indfmt,
+    char* Valfmt,
+    char* Rhsfmt,
+    int* Ptrcrd,
+    int* Indcrd,
+    int* Valcrd,
+    int* Rhscrd,
+    char *Rhstype
+    )
 {
   /*************************************************************************/
   /*  Read header information from the named H/B file...                   */
@@ -363,8 +383,12 @@ int readHB_header(FILE* in_file, char* Title, char* Key, char* Type,
 }
 
 
-int readHB_mat_double(const char* filename, int colptr[], int rowind[],
-    double val[])
+int readHB_mat_double(
+    const char* filename,
+    int colptr[],
+    int rowind[],
+    double val[]
+    )
 {
   /****************************************************************************/
   /*  This function opens and reads the specified file, interpreting its      */
@@ -509,8 +533,15 @@ int readHB_mat_double(const char* filename, int colptr[], int rowind[],
   return 1;
 }
 
-int readHB_newmat_double(const char* filename, int* M, int* N, int* nonzeros,
-    int** colptr, int** rowind, double** val)
+int readHB_newmat_double(
+    const char* filename,
+    int* M,
+    int* N,
+    int* nonzeros,
+    int** colptr,
+    int** rowind,
+    double** val
+    )
 {
   int Nrhs;
   char *Type;
@@ -1572,7 +1603,11 @@ int ParseRfmt(char* fmt, int* perline, int* width, int* prec, int* flag)
   return *width = atoi(tmp);
 }
 
-char* substr(const char* S, const int pos, const int len)
+char* substr(
+    const char* S,
+    const int pos,
+    const int len
+    )
 {
   int i;
   char *SubS;
