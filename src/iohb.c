@@ -646,6 +646,7 @@ int readHB_aux_double(
   {
     fprintf(stderr,"Warn: Attempt to read auxillary vector(s) which are not stored in Full form.\n");
     fprintf(stderr,"       Rhs must be specified as full. \n");
+    fclose(in_file);
     return 0;
   }
 
@@ -1098,7 +1099,10 @@ int readHB_mat_char(
       count++; col += Indwidth;
     }
   }
-  free(ThisElement);
+  if (ThisElement) {
+    free(ThisElement);
+    ThisElement = NULL;
+  }
 
   /*  Read array of values:  AS CHARACTERS*/
 
@@ -1244,12 +1248,14 @@ int readHB_aux_char(const char* filename, const char AuxType, char b[])
   if (Nrhs <= 0)
   {
     fprintf(stderr, "Warn: Attempt to read auxillary vector(s) when none are present.\n");
+    fclose(in_file);
     return 0;
   }
   if (Rhstype[0] != 'F' )
   {
     fprintf(stderr,"Warn: Attempt to read auxillary vector(s) which are not stored in Full form.\n");
     fprintf(stderr,"       Rhs must be specified as full. \n");
+    fclose(in_file);
     return 0;
   }
 

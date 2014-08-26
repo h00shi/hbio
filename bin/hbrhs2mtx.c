@@ -202,5 +202,9 @@ char * Makename(const char *Basename, const char* Vectype, const int Nrhs) {
   Filename = (char *) malloc((strlen(tmp)+10));
   strcpy(Filename,tmp);
   sprintf(&Filename[strlen(tmp)],"_%3s%d.mtx",Vectype,Nrhs);
+  if (tmp) {
+    free(tmp);
+    tmp = NULL;
+  }
   return Filename;
 }
