@@ -9,7 +9,8 @@ install:
   - cmake -DENABLE_GCOV:BOOL=ON .
   - make
 # command to run tests
-script: ctest
+script:
+  - ctest
 # Submit to coveralls for coverage statistics
 after_success:
-    - coveralls --exclude lib --exclude tests --gcov-options '\-lp'
+  - coveralls --gcov-options '\-lp'
