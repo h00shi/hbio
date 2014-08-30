@@ -1,6 +1,6 @@
 [![Build
 Status](https://travis-ci.org/nschloe/hbio.svg?branch=master)](https://travis-ci.org/nschloe/hbio)
-[![Coverage Status](https://coveralls.io/repos/nschloe/hbio/badge.png?branch=master)](https://coveralls.io/r/nschloe/hbio?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/nschloe/hbio.svg)](https://coveralls.io/r/nschloe/hbio?branch=master)
 [![Coverity Scan Build](https://scan.coverity.com/projects/2873/badge.svg)](https://scan.coverity.com/projects/2873)
 
 
