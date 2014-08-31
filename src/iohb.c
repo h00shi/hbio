@@ -1670,7 +1670,12 @@ int ParseRfmt(char* fmt, int* perline, int* width, int* prec, int* flag)
   free(tmp);
   tmp = strchr(fmt,*flag);
   if ( strchr(fmt,'.') ) {
-    *prec = atoi( substr( fmt, strchr(fmt,'.') - fmt + 1, strchr(fmt,')') - strchr(fmt,'.')-1) );
+    char * tmp2 = substr(fmt,
+                         strchr(fmt,'.') - fmt + 1,
+                         strchr(fmt,')') - strchr(fmt,'.')-1
+                         );
+    *prec = atoi(tmp2);
+    free(tmp2);
     tmp = substr(fmt,tmp - fmt + 1, strchr(fmt,'.') - tmp - 1);
   } else {
     tmp = substr(fmt,tmp - fmt + 1, strchr(fmt,')') - tmp - 1);
